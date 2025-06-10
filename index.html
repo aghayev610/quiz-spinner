@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Çarx ilə Sual Oyunu</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 50px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+    }
+    .question-box {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+    .options button {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+    }
+    .correct { background-color: #4CAF50; color: white; }
+    .incorrect { background-color: #f44336; color: white; }
+  </style>
+</head>
+<body>
+
+  <h1>Çarx ilə Sual Oyunu</h1>
+  <button onclick="spinWheel()">Çarxı Fırlat</button>
+
+  <div class="question-box" id="questionBox">
+    <h2 id="questionText"></h2>
+    <div class="options" id="options"></div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script>
+    function spinWheel() {
+      const index = Math.floor(Math.random() * questions.length);
+      const q = questions[index];
+      document.getElementById('questionText').innerText = q.question;
+      const optionsDiv = document.getElementById('options');
+      optionsDiv.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => {
+          const all = optionsDiv.querySelectorAll('button');
+          all.forEach(b => b.disabled = true);
+          if (i === q.correctIndex) {
+            btn.classList.add('correct');
+          } else {
+            btn.classList.add('incorrect');
+            all[q.correctIndex].classList.add('correct');
+          }
+        };
+        optionsDiv.appendChild(btn);
+      });
+      document.getElementById('questionBox').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>
